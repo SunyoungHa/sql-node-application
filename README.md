@@ -94,6 +94,7 @@ VALUES
 
 
 
+
 ### Linking the DB and the API
 1. We will need to link our Node.js server with our database to create our API. We’ll use the node-postgres package to interact with the postgres database. More here: https://node-postgres.com/
 2. We need to install the node-postgres module using the command below at the project root directory: `npm install pg`
@@ -103,9 +104,9 @@ VALUES
 
 const config = {
   user: 'sql_postgres_practice_user',
-  host: '[database.server.com] Replace with your URL',
+  host: 'dpg-cm0879ocmk4c7380k5a0-a.oregon-postgres.render.com',
   database: 'sql_postgres_practice',
-  password: 'Replace with your password',
+  password: '8CVahIR45JMRcjguQBa8ZHDeD9prdnea',
   port: 5432,
   ssl: true
 }
@@ -254,6 +255,9 @@ app.listen(port, () => {
 
 Now we get to test our application with Postman! Let's open Postman and enter a GET request to `localhost:3000/get-language/:id`. We should see our list of languages!
 
+
+cd src
+node index.js
 
 ### Next Steps
 For your lab, you will build on this project by adding a POST for adding a new language and a DELETE for removing a language. 
