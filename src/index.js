@@ -23,8 +23,6 @@ app.get('/get-languages', async (req, res) => {
   res.send(languages);
 });
 
-
-//NEW CODE
 const getLanguage = async (id) => {
   await client.connect() //connecting to our database
   const result = await client.query(`SELECT * FROM programming_languages WHERE id = ${id}`)
@@ -39,6 +37,61 @@ app.get('/get-language/:id', async (req, res) => {
 });
 
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+
+
+const deleteLanguage = async (id) => {
+await client.connect() //connecting to our database
+const result = await client.query(`DELETE FROM programming_languages WHERE id = ${id}`)
+console.log(result.rows);
+await client.end() //ending the connection to our database
+return result.rows;
+};
+
+ 
+app.delete('/delete-language/:id', async (req, res) => {
+const language = await deleteLanguage(req.params.id);
+res.send(language);
 });
+
+const addLanguage = async (languageData) => {
+    await client.connect();
+    const {
+      id,
+      name,
+      released_year,
+      githut_rank,
+      pypl_rank,
+      tiobe_rank,
+      created_at,
+      updated_at
+    } = languageData;
+  
+    const result = await client.query(`
+      INSERT INTO programming_languages(
+        id,
+        name,
+        released_year,
+        githut_rank,
+        pypl_rank,
+        tiobe_rank,
+        created_at,
+        updated_at
+      ) 
+      VALUES 
+      ($1, $2, $3, $4, $5, $6, $7, $8)
+    `, [id, name, released_year, githut_rank, pypl_rank, tiobe_rank, created_at, updated_at]);
+  
+    await client.end();
+    return result.rows;
+  }
+  
+  app.post('/add-language', async (req, res) => {
+    const language = await addLanguage(req.body);
+    res.send(language);
+  });
+
+
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+  });
+  
